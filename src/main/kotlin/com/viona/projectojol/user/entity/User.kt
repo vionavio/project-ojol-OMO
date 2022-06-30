@@ -1,6 +1,5 @@
 package com.viona.projectojol.user.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 
 data class User(

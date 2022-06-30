@@ -31,6 +31,6 @@ class UserRepositoryImpl(
         getCollection().findOne(User::id eq id).toResult()
 
     override fun getUserByUsername(username: String): Result<User> =
-        getCollection().findOne(User::username eq username).toResult()
+        getCollection().findOne(User::username eq username).toResult("user with $username not found")
 
 }

@@ -33,9 +33,8 @@ class JwtConfig : WebSecurityConfigurerAdapter() {
             .addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, *postPermit.toTypedArray()).permitAll()
-            .antMatchers(HttpMethod.GET, *postPermit.toTypedArray()).permitAll()
+            .antMatchers(HttpMethod.GET, *getPermit.toTypedArray()).permitAll()
             .anyRequest().authenticated()
-
     }
 
     companion object {

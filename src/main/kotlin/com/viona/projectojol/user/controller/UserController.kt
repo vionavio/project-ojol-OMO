@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,8 +25,8 @@ class UserController {
 
     @GetMapping
     fun getUser(): BaseResponse<User> {
-        val userId = SecurityContextHolder.getContext().authentication.principal as String
-        return userService.getUserByUserId(userId).toResponses()
+        val userId = SecurityContextHolder.getContext().authentication.principal as? String
+        return userService.getUserByUserId(userId.orEmpty()).toResponses()
     }
 
     @PostMapping("/login")

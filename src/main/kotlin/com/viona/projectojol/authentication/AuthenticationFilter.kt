@@ -37,11 +37,9 @@ class AuthenticationFilter : OncePerRequestFilter() {
             } else {
                 val claims = validate(request)
                 if (claims[Constant.CLAIMS] != null) {
-                    //setup
                     setupAuthentication(claims) {
                         filterChain.doFilter(request, response)
                     }
-
                 } else {
                     SecurityContextHolder.clearContext()
                     throw OjolException("token expired")
@@ -61,7 +59,7 @@ class AuthenticationFilter : OncePerRequestFilter() {
                     response.writer.println(responseString)
                 }
                 else -> {
-                    errorResponse.message = e.message ?: "token required"
+                    errorResponse.message = e.message ?: "token invalid!"
                     val responseString = ObjectMapper()
                         .writerWithDefaultPrettyPrinter()
                         .writeValueAsString(errorResponse)
@@ -72,7 +70,7 @@ class AuthenticationFilter : OncePerRequestFilter() {
     }
 
     private fun validate(request: HttpServletRequest): Claims {
-        val jwtToken = request.getHeader("Authentication")
+        val jwtToken = request.getHeader("Authorization")
         return Jwts.parserBuilder()
             .setSigningKey(Constant.SECRET.toByteArray())
             .build()
