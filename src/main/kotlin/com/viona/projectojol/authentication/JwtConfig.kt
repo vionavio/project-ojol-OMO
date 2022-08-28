@@ -43,7 +43,10 @@ class JwtConfig : WebSecurityConfigurerAdapter() {
             "/api/user/register"
         )
         val getPermit = listOf(
-            "/v1/test/ping"
+            "/v1/test/ping",
+            "/api/location/search",
+            "/api/location/reserve",
+            "/api/location/routes"
         )
 
         fun generateToken(user: User): String {

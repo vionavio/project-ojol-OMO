@@ -1,5 +1,7 @@
 package com.viona.projectojol
 
+import com.viona.projectojol.location.entity.Coordinate
+
 inline fun <reified T> T?.orThrow(
     message: String = "$(T::class.simpleName) is null"
 ): T {
@@ -22,5 +24,12 @@ fun <T>Result<T>.toResponses(message: String = ""): BaseResponse<T> {
     } else {
         BaseResponse.success(this.getOrNull())
     }
+}
+
+fun String.coordinateStringToData(): Coordinate {
+    val coordinateStrings = split(",")
+    val lat = coordinateStrings[0].toDoubleOrNull() ?: 0.0
+    val lon = coordinateStrings[1].toDoubleOrNull() ?: 0.0
+    return Coordinate(lat, lon)
 }
 

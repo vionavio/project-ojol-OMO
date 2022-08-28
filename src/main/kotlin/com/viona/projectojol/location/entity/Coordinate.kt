@@ -1,4 +1,4 @@
-package com.viona.projectojol.location
+package com.viona.projectojol.location.entity
 
 data class Coordinate(
     val latitude: Double = 0.0,

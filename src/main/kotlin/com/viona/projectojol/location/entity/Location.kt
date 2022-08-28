@@ -1,4 +1,4 @@
-package com.viona.projectojol.location
+package com.viona.projectojol.location.entity
 
 data class Location(
     var name: String = "",
