@@ -1,20 +1,16 @@
 package com.viona.projectojol.user.controller
 
 import com.viona.projectojol.BaseResponse
-import com.viona.projectojol.user.entity.UserLogin
 import com.viona.projectojol.toResponses
 import com.viona.projectojol.user.entity.LoginResponse
-import com.viona.projectojol.user.service.UserService
 import com.viona.projectojol.user.entity.User
-import com.viona.projectojol.user.entity.UserRequest
+import com.viona.projectojol.user.entity.UserLogin
+import com.viona.projectojol.user.request.CustomerRegisterRequest
+import com.viona.projectojol.user.request.DriverRegisterRequest
+import com.viona.projectojol.user.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
@@ -36,10 +32,19 @@ class UserController {
         return userService.login(userLogin).toResponses()
     }
 
-    @PostMapping("/register")
+    @PostMapping("customer/register")
     fun register(
-        @RequestBody userRequest: UserRequest
+        @RequestBody userRequest: CustomerRegisterRequest
     ): BaseResponse<Boolean> {
-        return userService.register(userRequest.matToNewUser()).toResponses()
+        val user = userRequest.mapToUser()
+        return userService.register(user).toResponses()
+    }
+
+    @PostMapping("/driver/register")
+    fun registerDriver(
+        @RequestBody userRequest: DriverRegisterRequest
+    ): BaseResponse<Boolean>{
+        val user = userRequest.mapToUser()
+        return userService.register(user).toResponses()
     }
 }

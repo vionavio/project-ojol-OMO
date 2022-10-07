@@ -2,9 +2,13 @@ package com.viona.projectojol.user.repository
 
 import com.mongodb.client.MongoCollection
 import com.viona.projectojol.OjolException
+import com.viona.projectojol.Utils.safeCastTo
 import com.viona.projectojol.database.DatabaseComponent
 import com.viona.projectojol.toResult
+import com.viona.projectojol.user.entity.Role
 import com.viona.projectojol.user.entity.User
+import com.viona.projectojol.user.entity.extra.CustomerExtras
+import com.viona.projectojol.user.entity.extra.DriverExtras
 import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import org.litote.kmongo.getCollection
@@ -27,8 +31,17 @@ class UserRepositoryImpl(
         } else getCollection().insertOne(user).wasAcknowledged().toResult()
     }
 
-    override fun getUserById(id: String): Result<User> =
-        getCollection().findOne(User::id eq id).toResult()
+    override fun getUserById(id: String): Result<User> {
+        return getCollection().findOne(User::id eq id).run {
+            if (this?.role == Role.DRIVER) {
+                this.extra.safeCastTo(DriverExtras::class.java)
+            } else {
+                this?.extra?.safeCastTo(CustomerExtras::class.java)
+            }
+            this
+        }.toResult()
+    }
+
 
     override fun getUserByUsername(username: String): Result<User> =
         getCollection().findOne(User::username eq username).toResult("user with $username not found")
